@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>按键修饰符</title>
+    <link rel="stylesheet" href="../bootstrap.min.css">
+    <script src="../vue.js"></script>
+    <style>
+        li {
+            color: rgb(44, 151, 212)
+        }
+
+        h6 {
+            color: rgb(221, 14, 14)
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h3>按键修饰符：用于在按下特定按键时执行相应操作</h3>
+        <p>其中，Vue 对常见的按键设置了修饰符：</p>
+        <li>.enter</li>
+        <li>.tab</li>
+        <li>.delete（捕获"删除"和"退格"键）</li>
+        <li>.esc</li>
+        <li>.space</li>
+        <li>.up</li>
+        <li>.down</li>
+        <li>.left</li>
+        <li>.right</li>
+        <hr>
+        <h3>除此之外，还有新增的 系统修饰符 可使用：</h3>
+        <li>.ctrl</li>
+        <li>.alt</li>
+        <li>.shift</li>
+        <li>.meta（window键）</li>
+        <hr>
+        <h6>但是，因为在实际操作中有可能使用其他的按键，此时需要将其设置为一个可使用的按键修饰符以便进行操作，为此可使用下面的方法：</h6>
+        <code>Vue.config.keyCodes.按键名 = 对应的按键码</code>
+        <div class="app">
+            <p>示例：设置按键 f1 为按键修饰符，使其在被点击时触发事件（联动 "00 案例/列表管理"）</p>
+            <p>代码28行：(为文本框添加按键F1抬起事件) @keyup.f1 = 'add'</p>
+            <p>代码59行：Vue.config.keyCodes.f1 = 113</p>
+        </div>
+    </div>
+</body>
+
+</html>

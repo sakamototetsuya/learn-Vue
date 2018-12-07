@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>路由的基本使用</title>
+    <script src="../vue.js"></script>
+    <script src="../vue-router.js"></script>
+    <link rel="stylesheet" href="../../Vue/bootstrap.min.css">
+    <style>
+        li {
+            color: rgb(44, 151, 212)
+        }
+
+        h6 {
+            color: rgb(221, 14, 14)
+        }
+
+        h5 {
+            margin: 10px 0 20px 0;
+        }
+
+        b {
+            color: orange
+        }
+
+        button {
+            margin: 10px 0;
+            padding: 5px;
+            color: white;
+            background-color: rgb(37, 80, 83);
+        }
+
+        .router-link-active {
+            color: rgb(87, 143, 106);
+            font-size: 18px;
+            margin: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h5>Router---路由</h5>
+        <h6>简单的说：使用路由是为了一个将组件（components）映射到指定路由(routes)来进行渲染的工作过程</h6>
+
+        <p>举个栗子：</p>
+        <pre>
+            < router-link to="/login" >登录< /router-link >
+            < router-link to="/register" >注册< /router-link >
+            < br >
+            < router-view >< /router-view >
+        </pre>
+        <p>其中：</p>
+        <li><b> router-link </b>作为导航，通过传入的<b> to </b>属性指定链接，即移动到的地址（该标签默认会被渲染为一个 a 标签）</li>
+        <li><b> router-view </b>作为路由的出口，路由匹配到的组件将被渲染到这里</li>
+        <br><br>
+        <p>展示：（注意看地址栏）</p>
+        <!-- 4.在页面中放置“坑位”，作为路由的容器 -->
+        <!-- 6.在路由中，默认情况下此时使用的链接会得到一个 router-link-active 的类，通过对其设置 CSS 样式，可以使其高亮 -->
+        <router-link to="/login">登录</router-link>
+        <router-link to="/register">注册</router-link>
+        <br>
+        <router-view ></router-view>
+    </div>
+
+
+    <script>
+        //1.定义路由组件
+        const login = {template: '<h6>login组件</h6>'}
+        const register = {template: '<h6>register组件</h6>'}
+        
+        //2.定义路由（配置路由匹配）
+        //有两个必须的属性：1. path ：该属性配置路由地址   2. component ：规定匹配成功时调用的组件（属性值必须是一个组件模版对象）
+        /* 
+        const myRoute = [
+            { path: '/login', component: login },
+            { path: '/register', component: register }
+        ] 
+        */
+
+        //3.创建路由实例，然后传入路由配置(这里的写法将步骤二结合了)
+        const routerObj = new VueRouter({
+            //固定语法： routes:传入的配置
+            routes: [
+                //5.一般来说，页面都有个固定的主页，即当 path 为 '/' 时显示的情况。在此，我们使用 redirect（重定向） 使当没有配置路由地址时自动将页面定位在 login 页面中
+                //当然，也可以再写一个组件使其作为默认显示的页面
+                { path: '/', redirect: '/login'},
+                { path: '/login', component: login },
+                { path: '/register', component: register }
+            ]
+        })
+
+
+        new Vue({
+            el: '.container',
+            //引用路由，前面的 router 是固定的
+            router: routerObj
+        })
+    </script>
+</body>
+
+</html>

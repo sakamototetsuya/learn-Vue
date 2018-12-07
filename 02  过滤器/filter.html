@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>过滤器的使用</title>
+    <link rel="stylesheet" href="../bootstrap.min.css">
+    <script src="../vue.js"></script>
+    <style>
+        h6 {
+            font-weight: thin;
+            color: gold
+        }
+
+        h3 {
+            margin: 30px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h3>过滤器（filter）格式</h3>
+        <code>{{ msg | filterName }}：使用过滤器（filterName）处理数据（msg）</code>
+        <hr>
+        <h3>过滤器的定义</h3>
+        <code>
+            vue.filter({'filterName', function(arg) {
+            return ...
+            }})
+        </code>
+        <h6>这个语法的意思是：在 vue 实例中全局定义一个名为 filterName 的过滤器，它接收一个参数，即管道符 "|" 前面的数据，对其进行操作</h6>
+        <div class="app">
+            <p> 示例：{{ message }} (使用过滤器将“色情”转为“瑟琴”)</p>
+            <p> 结果：{{ message | replaceStr}}</p>
+        </div>
+        <hr>
+        <h3>私有过滤器的定义</h3>
+        <p>在 Vue 示例中定义 filters 来制定一个私有作用域的过滤器，需要两个条件：过滤器名字 和 处理函数</p>
+        <code>
+            filters: {
+                filterName: ( msg ) => {
+                    return ...
+                }
+            }
+        </code>
+        <div class="app2">
+           <p> 示例：{{ time }}  (使用过滤器将时间格式更改)</p>
+           <p> 结果：{{ time | change }}</p>
+        </div>
+    </div>
+
+    <script>
+        Vue.filter('replaceStr', (message) => {
+            return message.replace(/色情/g, '瑟琴')
+        })
+
+        var vm = new Vue({
+            el: '.app',
+            data: {
+                message: 'x是一个有点色情，并且会展现这样色情的色情大叔'
+            }
+        })
+
+        var vm2 = new Vue({
+            el: '.app2',
+            data: {
+                time: new Date()
+            },
+            filters: {
+                change: (time) => {
+                    var dt = new Date(time)
+                    var y = dt.getFullYear()
+                    var m = dt.getMonth() + 1 
+                    var d = dt.getDate()
+                    var hh = dt.getHours()
+                    var mm = dt.getMinutes()
+                    var ss = dt.getSeconds()
+                    if(mm < 10) {
+                        mm = 0 + `${mm}`
+                    }
+                    if(ss < 10) {
+                        ss = 0 + `${ss}`
+                    }
+                    return `${y}-${m}-${d}  ${hh}:${mm}:${ss}`
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>组件的创建</title>
+    <script src="../vue.js"></script>
+    <link rel="stylesheet" href="../bootstrap.min.css">
+    <style>
+        li {
+            color: rgb(44, 151, 212)
+        }
+
+        h6 {
+            color: rgb(221, 14, 14)
+        }
+
+        h5 {
+            margin: 10px 0 20px 0;
+        }
+
+        b {
+            color: orange
+        }
+
+        button {
+            margin: 10px 0;
+            padding: 5px;
+            color: white;
+            background-color: rgb(37, 80, 83);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h5>全局组件</h5>
+        <h6>全局组件一经创建就可以被所有Vue实例重复调用，所以仅用于复数使用的场景</h6>
+        <code>语法：Vue.component('name', {...})</code>
+        <hr>
+
+
+        <h5>局部组件</h5>
+        <h6>局部组件被定义在一个Vue实例中，所以它的作用域仅在该实例</h6>
+        <code>语法：new Vue({
+            components:{
+            'name': {
+            template:'...'
+            }
+            }
+            })</code>
+        <hr>
+
+
+        <h5>使用 Vue.extend 创建组件</h5>
+        <h6>使用 Vue.extend 创建一个全局组件：</h6>
+        <code>
+            var com = Vue.extend({
+            template: '< h5>这是使用 Vue.extend 创建的组件< /h5>'
+                    })
+                    <br>
+                    Vue.component('name', com)
+        </code>
+        <p>上面的代码也可以合并：</p>
+        <code>
+            Vue.component('name', Vue.extend({
+            template: '< h5>这是使用 Vue.extend 创建的组件< /h5>'
+                    }))
+        </code>
+        <hr>
+
+
+
+        <h5>常用的创建方式</h5>
+        <h6>通过在 HTML 中定义<b> template </b>元素来完成布置（注意：必须放在 Vue 实例控制区外部，即不在 el 内）</h6>
+        <pre>
+            < template >
+                < div class="box" >
+                    < li >...< /li >
+                    < a href="" >...< /a >
+                < /div >
+            < /template >
+        </pre>
+        <hr>
+
+
+
+        <h3>注意：</h3>
+        <li><b> template </b>是组件要展示的 HTML 结构，并且只能有一个根元素。也就是说比如<b>< li >...< /li >< a >...< /a ></b>会报错，需要用一个元素包裹它们，比如<b>< div >< li >...< /li >< a >...< /a >< /div ></b></li>
+        <li><b> name </b>是组件的名称，要调用组件只需要在页面用组件名写一个标签</li>
+    </div>
+</body>
+
+</html>

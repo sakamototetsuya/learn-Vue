@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>单元素/组件的过渡</title>
+    <script src="../vue.js"></script>
+    <link rel="stylesheet" href="../bootstrap.min.css">
+    <style>
+        li {
+            color: rgb(44, 151, 212)
+        }
+
+        h6 {
+            color: rgb(221, 14, 14)
+        }
+
+        h5 {
+            margin: 10px 0 20px 0;
+        }
+
+        b {
+            color: orange
+        }
+
+        button {
+            margin: 10px 0;
+            padding: 5px;
+            color: white;
+            background-color: rgb(37, 80, 83);
+        }
+
+        .v-enter,
+        .v-leave-to {
+            opacity: 0;
+        }
+
+        .v-enter-active,
+        .v-leave-active {
+            transition: opacity 1s;
+        }
+
+        .bounce-enter-active {
+            animation: bounce-in .5s;
+        }
+
+        .bounce-leave-active {
+            animation: bounce-in .5s reverse;
+        }
+
+        .duration-enter,
+        .duration-leave-to {
+            opacity: 0;
+        }
+
+        .duration-enter-active,
+        .duration-leave-active {
+            transition: opacity 1s;
+        }
+
+        @keyframes bounce-in {
+            0% {
+                transform: scale(0);
+            }
+
+            50% {
+                transform: scale(1.5);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h5>CSS过渡</h5>
+        <h6>Vue中使用<b>transition</b>组件对其中的元素和组件添加进入/离开过渡效果</h6>
+        <div class="app1">
+            <button @click="seen=!seen">Toggle</button>
+            <transition>
+                <b v-if="seen">过渡效果展示</b>
+            </transition>
+        </div>
+        <div class="box">
+            <li>1.vue的过渡效果只对对应名字的<b>transition</b>组件内起效，名字由<b>transition</b>标签中的<b>name</b>属性定义</li>
+            <li>2.需要在CSS中定义相应的过渡效果，但是vue只提供简单的显隐及移动过渡</li>
+            <li>3.在样式中使用<b>transitionName-过渡类名</b>进行过渡调整</li>
+        </div>
+        <hr>
+
+
+
+        <h5>过渡的类名</h5>
+        <h6>在进入/离开的过渡中，会有 6 个 class 切换:</h6>
+        <li>1.<b>v-enter：</b>定义进入过渡的开始状态。在元素被插入之前生效，在元素被插入之后的下一帧移除</li>
+        <li>2.<b>v-enter-active：</b>定义进入过渡生效时的状态。在整个进入过渡的阶段中应用，在元素被插入之前生效，在过渡/动画完成之后移除</li>
+        <li>3.<b>v-enter-to：</b>定义进入过渡的结束状态。在元素被插入之后下一帧生效 (与此同时 <b>v-enter</b> 被移除)，在过渡/动画完成之后移除</li>
+        <li>4.<b>v-leave：</b>定义离开过渡的开始状态。在离开过渡被触发时立刻生效，下一帧被移除</li>
+        <li>5.<b>v-leave-active</b>定义离开过渡生效时的状态。在整个离开过渡的阶段中应用，在离开过渡被触发时立刻生效，在过渡/动画完成之后移除</li>
+        <li>6.<b>v-leave-to</b>定义离开过渡的结束状态。在离开过渡被触发之后下一帧生效 (与此同时 <b>v-leave</b> 被删除)，在过渡/动画完成之后移除</li>
+        <img src="图像 1.jpg" alt="过渡类名">
+        <h6>PS.若没有设置transition的<b>name</b>属性，则<b>v-</b>是这些类名的默认前缀；如果你使用了 <b>
+                < transition name="my-transition">
+            </b>，那么 <b>v-enter</b> 会替换为 <b>my-transition-enter</b></h6>
+
+
+
+        <h5>过渡的持续时间</h5>
+        <h6>为了更加精细的控制，可以在<b>transition</b>组件中的<b>duration</b>属性设置一个显性的控制时间(单位：ms)</h6>
+        <h6>PS. 如果直接设置则是同时规定显示隐藏的时间；如果使用<b>{enter: number, leave: number}</b>则可以分别控制显示/隐藏</h6>
+        <button @click="slow=!slow">统一过渡时间</button>
+        <button @click="other=!other">分别设置显隐时间</button>
+        <transition name="duration" :duration="1000">
+            <p v-if="slow">我花了一秒钟出现</p>
+        </transition>
+        <transition name="other" :duration="{enter: 400, leave: 1500}">
+            <p v-if="other">显隐=400:1500</p>
+        </transition>
+
+
+
+        <hr>
+        <h5>CSS动画</h5>
+        <h6>CSS 动画用法同 CSS 过渡，区别是在动画中 <b>v-enter</b> 类名在节点插入 DOM 后不会立即删除，而是在 <b>animationend</b> 事件触发时删除</h6>
+        <div id="example-2">
+            <button @click="show = !show">Toggle show</button>
+            <transition name="bounce">
+                <p v-if="show">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris facilisis enim libero,
+                    at lacinia diam fermentum id. Pellentesque habitant morbi tristique senectus et netus.</p>
+            </transition>
+        </div>
+    </div>
+
+
+
+
+    <script>
+        new Vue({
+            el: '.container',
+            data: {
+                seen: false,
+                show: true,
+                slow: false,
+                other: false
+            }
+        });
+    </script>
+</body>
+
+</html>

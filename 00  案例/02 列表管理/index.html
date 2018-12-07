@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <script src="../../vue.js"></script>
+    <style>
+        .form-control {
+            margin: 0 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-group form-inline text-center">
+            <label for="cid">id</label>
+            <input class="form-control" type="text" id="cid" v-model='id'>
+
+            <label for="cper">人物</label>
+            <input class="form-control" type="text" id="cper" v-model='name'>
+
+            <label for="cmono">出场作品</label>
+            <input type="text" class="form-control" id="cmono" v-model='mono' @keyup.enter="add" @keyup.f2='add'>
+
+            <button class="btn btn-primary" @click='add'>添加</button>
+
+            <input class="form-control" v-model='keywords' type="search" name="find" id="find" placeholder="搜索关键字">
+        </div>
+
+        <table class="table table-striped table-hover table-responsivetable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>人物</th>
+                    <th>出场作</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for='item in search(keywords)' :key='item.id'>
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.mono }}</td>
+                    <td>
+                        <a href="" @click.prevent='del(item.id)'>删除</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <script>
+        Vue.config.keyCodes.f2 = 113
+        new Vue({
+            el: '.container',
+            data: {
+                id: '',
+                name: '',
+                mono: '',
+                keywords: '',
+                list: [{
+                        id: 1,
+                        name: '我闻悠太',
+                        mono: '超自然9人组'
+                    },
+                    {
+                        id: 2,
+                        name: '夏目贵志',
+                        mono: '夏目友人帐'
+                    }
+                ]
+            },
+            methods: {
+                add() {
+                    //获取 id 和 name ,直接从 data 获取,组建一个对象
+                    var person = {
+                        id: this.id,
+                        name: this.name,
+                        mono: this.mono
+                    }
+                    //调用数组的方法，将数据添加到 data 上的 list 中
+                    this.list.push(person)
+                    //添加完毕后  将文本框清空
+                    this.id = this.name = this.mono = ''
+                },
+                del(id) { //根据对应项的 id 删除项
+                    //使用数组的 some 方法查找 id ，将对应的 id 删除
+                    this.list.some((item, i) => {
+                        if (item.id == id) {
+                            this.list.splice(i, 1)
+                        }
+                        //some 方法在找到指定项时返回 true
+                        return true
+                    })
+                },
+                search(keywords) {
+                    var newList = []
+                    this.list.forEach(item => {
+                        if (item.name.indexOf(keywords) != -1) {
+                            newList.push(item)
+                        }
+                    })
+                    return newList
+                }
+            }
+        });
+    </script>
+
+</body>
+
+</html>

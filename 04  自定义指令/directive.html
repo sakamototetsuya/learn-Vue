@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>自定义指令</title>
+    <link rel="stylesheet" href="../bootstrap.min.css">
+    <script src="../vue.js"></script>
+    <style>
+        li {
+            color: rgb(44, 151, 212)
+        }
+
+        h6 {
+            color: rgb(221, 14, 14)
+        }
+
+        b {
+            color: orange
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h3>自定义指令：用于扩展开发人员的业务编写</h3>
+        <p>虽然 Vue 中有很多指令，但是难免会缺少一些符合个人习惯的操作指令，这个时候，可以通过自定义指令功能添加个人指令，用于快速开发</p>
+        <h6>但是必须注意：在 Vue 中自定义的指令必须使用 "v-" 前缀！</h6>
+        <br>
+        <p>当需要一个定义在全局的自定义指令时，使用以下代码：</p>
+        <code>
+            Vue.directive('指令名', {
+                钩子函数: function(el) {
+                    el.指令名()
+                }
+            })
+        </code>
+        <h6>
+            <li>定义指令名时不需要添加 "v-" 前缀，但是调用的时候要加（有点像 JQ ）</li>
+            <li>钩子函数用于标记指令的调用时机，在特定情况下调用，详细见下</li>
+            <li>el 指令所绑定的元素</li>
+        </h6>
+        <hr>
+
+
+        <h3>钩子函数：一个指令可以提供以下钩子函数</h3>
+        <li><b>bind：</b>只在指令绑定到元素时调用一次（注意：此时元素尚未渲染到 DOM 中）</li>
+        <li><b>inserted：</b>被绑定元素插入父节点时调用(仅保证父节点存在，但不一定已被插入文档中)</li>
+        <li><b>update：</b>所在组件的 VNode 更新时调用，<strong>但是可能发生在其子 VNode 更新之前</strong></li>
+        <li><b>componentUpdated：</b>指令所在组件的<strong> VNode 及其子 VNode </strong>全部更新后调用</li>
+        <li><b>unbind：</b>只调用一次，指令与元素解绑时调用</li>
+        <br>
+        <h4>钩子函数会被传入以下参数：</h4>
+        <li><b>el：</b>指令所绑定的元素，可以用来直接操作 DOM</li>
+        <li><b>binding：</b>一个对象，包含以下属性：
+            <ol>
+                <li><b>name：</b>指令名，不包括<strong> v- </strong>前缀</li>
+                <li><b>value：</b>指令的绑定值，例如：<strong>v-my-directive="1 + 1"</strong> 中，绑定值为 <strong>2</strong></li>
+                <li><b>oldValue：</b>指令绑定的前一个值，仅在 <strong>update</strong> 和 <strong>componentUpdated</strong> 钩子中可用。无论值是否改变都可用</li>
+                <li><b>expression：</b>字符串形式的指令表达式。例如 <strong>v-my-directive="1 + 1"</strong> 中，表达式为<strong> "1 + 1"</strong></li>
+                <li><b>arg：</b>传给指令的参数，可选。例如 <strong>v-my-directive:foo</strong> 中，参数为 <strong>"foo"</strong></li>
+                <li><b>modifiers：</b>一个包含修饰符的对象。例如：<strong>v-my-directive.foo.bar</strong> 中，修饰符对象为 <strong>{ foo: true, bar: true }</strong></li>
+            </ol>
+        </li>
+        <li><b>vnode：</b>Vue 编译生成的虚拟节点</li>
+        <li><b>oldVnode：</b>上一个虚拟节点，仅在 <strong>update</strong> 和 <strong>componentUpdated</strong> 钩子中可用</li>
+    </div>
+    <br><br><br><br><br><br>
+</body>
+
+</html>

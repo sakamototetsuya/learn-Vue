@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>发表评论功能</title>
+    <link rel="stylesheet" href="../../bootstrap.min.css">
+    <script src="../../vue.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <com @func="loadcm"></com>
+        <hr>
+        <ul class="list-group">
+            <li class="list-group-item" v-for="(item, index) in list" :key="index">
+                <span class="badge">{{ item.name }}：</span>
+                {{ item.say }}
+            </li>
+        </ul>
+    </div>
+
+
+
+    <template id="com1">
+        <div>
+            <div class="form-group">
+                <label>用户：</label>
+                <input type="text" class="form-control" v-model="name">
+            </div>
+            <div class="form-group">
+                <label>评论：</label>
+                <textarea class="form-control" v-model="say"></textarea>
+            </div>
+            <div class="form-group">
+                <input type="button" value="发表评论" class="btn btn-primary" @click="addSay">
+            </div>
+        </div>
+    </template>
+
+
+
+
+    <script>
+        new Vue({
+            el: '.container',
+            data: {
+                list: [{
+                        name: '五更琉璃',
+                        say: '牵手吧，如果这就是命运的话'
+                    },
+                    {
+                        name: '时崎狂三',
+                        say: '绝对要杀掉原初精灵！！！'
+                    },
+                ]
+            },
+            methods: {
+                loadcm() { //加载评论方法，从本地的 localstorage 中读取数据
+                    var loc = JSON.parse(localStorage.getItem("cm") || '[]')
+                    //用添加的数据覆盖假数据
+                    this.list = loc
+                }
+            },
+            created() { //在页面渲染时调用 loadcm 方法，将评论加载到页面中
+                this.loadcm()
+                //但是这还不够，因为在点击按钮之后仅仅将数据放到 localstorage ，页面并不会刷新，需要刷新页面才能使结构重新渲染
+                //为此，我们应该在点击按钮时就调用这个方法，但是按钮是子组件，无法普通的调用父组件的方法，所以使用 $emit 触发事件
+            },
+            components: {
+                com: { //这里的要与放在 HTML 里的 元素对应
+                    template: '#com1', //使用组件模版对象，这里的要和 template 标签里的 id 对应（必须用 ID）
+
+                    //因为是在 template 中绑定数据和方法，所以在组件定义
+                    data() {
+                        return {
+                            name: '',
+                            say: ''
+                        }
+                    },
+                    methods: {
+                        addSay() { //发表评论的方法
+                            /* 分析：
+                            1.数据存放的位置------localstorage
+                            2.组织出一个最新的评论对象
+                            3.将上一步得到的对象保存到 localstorage
+                                3.1 localstorage 只支持字符串数据，要先调用 JSON.stringify() 将其转化为 JSON 格式
+                                3.2 在保存之前，先从 localstorage 获取到之前的评论（string），转化为一个对象，然后将最新的评论 push 到该数组
+                                3.3 如果获取的 localstorage 字符串为空，则可以返回一个空数组（'[]'） 让 JSON.parse 去转化
+                                3.4 把最新的评论数组再次调用 JSON.stringify() 转为 JSON字符串，然后调用 localstorage.setItem 存储
+                             */
+
+
+                            //使用 comment 组织一个评论的格式
+                            var comment = {
+                                name: this.name,
+                                say: this.say
+                            }
+                            //从 localstorage 中获取所有的评论信息
+                            //‘cm’ 是随便写的，用以指代获取的信息；如果信息为空，则得到一个'[]'，因为获取为空或undefinde会报错
+                            var lis = JSON.parse(localStorage.getItem("cm") || '[]')
+                            //将获取到的所有评论信息推到 comment 中
+                            lis.push(comment)
+                            //重新保存最新的评论数据（注意"cm"与上面的保持一致）
+                            localStorage.setItem('cm', JSON.stringify(lis))
+                            //清空文本框
+                            this.name = this.say = ''
+
+                            //触发父组件的 loadcm 方法，将 localstorage 的信息渲染到页面上
+                            this.$emit('func')
+                        }
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

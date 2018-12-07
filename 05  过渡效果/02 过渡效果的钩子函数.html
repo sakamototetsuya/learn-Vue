@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>过渡的钩子函数</title>
+    <script src="../vue.js"></script>
+    <link rel="stylesheet" href="../bootstrap.min.css">
+    <style>
+        li {
+            color: rgb(44, 151, 212)
+        }
+
+        h6 {
+            color: rgb(221, 14, 14)
+        }
+
+        h5 {
+            margin: 10px 0 20px 0;
+        }
+
+        b {
+            color: orange
+        }
+
+        button {
+            margin: 10px 0;
+            padding: 5px;
+            color: white;
+            background-color: rgb(37, 80, 83);
+        }
+
+        .ball {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h5>为了便于操作，过渡效果还有钩子函数，可以在<b>transition</b>组件中绑定。总共有以下几种：</h5>
+        <li><b>before-enter</b></li>
+        <li><b>enter</b></li>
+        <li><b>after-enter</b></li>
+        <li><b>enter-cancelled</b></li>
+        <li><b>before-leave</b></li>
+        <li><b>leave</b></li>
+        <li><b>after-leave</b></li>
+        <li><b>leave-cancelled</b></li>
+        <p>这些钩子函数可以和CSS<b>transition/animation</b>结合使用，也可以单独使用</p>
+        <h6 class="text-danger">注意：当只用 JavaScript 过渡的时候，在 <b>enter</b> 和 <b>leave</b> 中必须使用 <b>done</b>
+            进行回调。否则，它们将被同步调用，过渡会立即完成</h6>
+        <hr>
+
+
+        <h5>接下来我们将借助部分钩子函数做一个简易的添加购物车动画：</h5>
+        <div class="box">
+            <button @click="show=!show">添加购物车</button>
+            <transition name="buy" @before-enter="before" @enter="enter" @after-enter="after">
+                <div class="ball" v-show="show"></div>
+            </transition>
+        </div>
+
+
+        <script>
+            new Vue({
+                el: '.box',
+                data: {
+                    show: false
+                },
+                methods: {
+                    //动画钩子函数的第一个参数 el 表示要执行事件的 DOM 对象
+                    before(el) {
+                        //before-enter：表示动画入场之前，此时动画尚未开始，在此设置动画的起始状态
+                        el.style.transform = "translate(0, 0)";
+                    },
+                    enter(el, done) {
+                        //为了显示动画过程，需要使用 el.offsetWidth （其实随便 offsetXXX 都行,例如 offsetTop）
+                        el.offsetWidth;
+
+                        //enter：表示动画完成时的结束状态
+                        el.style.transform = "translate(500px, 200px)";
+                        el.style.transition = "all 2s ease";
+
+                        //enter 的第二个参数其实就是代表 after-enter 钩子（这里显示的调用了）
+                        done();
+                    },
+                    after(el) {
+                        //after-enter：动画完成之后会调用
+                        this.show = !this.show
+                    }
+                }
+            })
+        </script>
+    </div>
+</body>
+
+</html>

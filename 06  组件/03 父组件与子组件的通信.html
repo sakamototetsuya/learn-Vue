@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>父子组件的通信</title>
+    <script src="../vue.js"></script>
+    <link rel="stylesheet" href="../bootstrap.min.css">
+    <style>
+        li {
+            color: rgb(44, 151, 212)
+        }
+
+        h6 {
+            color: rgb(221, 14, 14)
+        }
+
+        h5 {
+            margin: 10px 0 20px 0;
+        }
+
+        b {
+            color: orange
+        }
+
+        button {
+            margin: 10px 0;
+            padding: 5px;
+            color: white;
+            background-color: rgb(37, 80, 83);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h5>父组件向子组件传递数据---props</h5>
+        <h6>如果子组件要使用父组件中 data 的数据，就需要在子组件上绑定属性，并且使用<b> props </b>属性绑定父组件传递的值（该属性是一个数组）</h6>
+
+        <div class="box1">
+            <com1></com1>
+            <com2 :msg="msg"></com2>
+        </div>
+        <hr>
+
+
+
+        <h5>父组件向子组件传递方法---$emit()</h5>
+        <h6>子组件若要使用父组件的方法，需要使用<b> $emit() </b>方法（含义是触发、发射）</h6>
+        <li>首先需要在父组件使用<b> v-on </b>绑定一个自定义函数，该函数的名字可以随意起（本例为：func），将它与父组件中定义的方法绑定（本例为：show）</li>
+        <li>然后在写好的子组件中，绑定一个事件（本例为：click），当然，需要指定一个方法（本例为：myClick）</li>
+        <li>最后，在子组件中的<b> methods </b>中定义刚才指定的方法，使用语句<b> this.$emit("要触发的父组件函数") </b>（本例为：func）即可</li>
+        <div class="box2">
+            <com3 @func="show"></com3>
+        </div>
+        <hr>
+
+
+
+        <h5>$emit()传参</h5>
+        <h6>大体上与上个例子一样，主要在于父组件的方法传入了一个参数（本例为：look(data)）</h6>
+        <li>传入的参数可以有多个，如果都要使用只要对应的加入形参即可</li>
+        <li>参数由调用者（子组件）传入，也就是说在<b> this.$emit("要触发的父组件函数", 传入的参数...【如果有多个则以逗号隔开】) </b>中传入参数</li>
+        <div class="box3">
+            <com4 @see="look"></com4>
+        </div>
+        <hr>
+
+
+
+        <h5>子组件向父组件传递数据</h5>
+        <h6>上面的例子的转换思路：传入的参数为子组件中<b> data </b>里的数据，则父组件就可以经过触发函数收到这个参数</h6>
+        <li class="text-danger">注意：组件中定义的<b> data </b>是一个函数，而不是一个对象</li>
+        <div class="box4">
+            <com5 @xx="oo"></com5>
+        </div>
+    </div>
+
+
+    <script>
+        var vm1 = new Vue({
+            el: '.box1',
+            data: {
+                msg: '(父组件：只有用 props 接收我的传值才可以使用)'
+            },
+            components: {
+                com1: {
+                    template: '<p>我没有使用props</p>',
+                },
+                com2: {
+                    template: '<p>我使用了props{{msg}}</p>',
+                    props: ['msg']
+                },
+            }
+        });
+
+
+        var vm2 = new Vue({
+            el: '.box2',
+            methods: {
+                show() {
+                    alert("调用了父组件的方法")
+                }
+            },
+            components: {
+                com3: {
+                    template: '<button @click="myClick">子组件</button>',
+                    methods: {
+                        myClick() {
+                            this.$emit("func")
+                        }
+                    }
+                }
+            }
+        });
+
+
+        var vm3 = new Vue({
+            el: '.box3',
+            methods: {
+                look(data) {
+                    alert("接收了一个参数" + (data))
+                }
+            },
+            components: {
+                com4: {
+                    template: '<button @click="mide">子组件（有参数）</button>',
+                    methods: {
+                        mide() {
+                            this.$emit("see", "----我是参数")
+                        }
+                    }
+                }
+            }
+        });
+
+
+        var vm4 = new Vue({
+            el: '.box4',
+            data: {
+                data: null
+            },
+            methods: {
+                oo(data) {
+                    alert("父组件接收了子组件传递的参数");
+                    alert("这个参数是：" + data);
+                }
+            },
+            components: {
+                com5: {
+                    template: '<button @click="watch">子组件（传递参数）</button>',
+                    methods: {
+                        watch() {
+                            this.$emit("xx", this.message)
+                        }
+                    },
+                    data() {
+                        return {
+                            message: '吔屎啦！'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+    <br><br><br><br>
+</body>
+
+</html>

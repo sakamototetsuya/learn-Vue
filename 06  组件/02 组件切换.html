@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>父子组件的通信</title>
+    <script src="../vue.js"></script>
+    <link rel="stylesheet" href="../bootstrap.min.css">
+    <style>
+        li {
+            color: rgb(44, 151, 212)
+        }
+
+        h6 {
+            color: rgb(221, 14, 14)
+        }
+
+        h5 {
+            margin: 10px 0 20px 0;
+        }
+
+        b {
+            color: orange
+        }
+
+        button {
+            margin: 10px 0;
+            padding: 5px;
+            color: white;
+            background-color: rgb(37, 80, 83);
+        }
+
+        .box {
+            width: 300px;
+            height: 300px;
+            margin: 30px auto;
+        }
+
+        .login>a {
+            display: inline-block;
+            width: 146px;
+            text-align: center;
+            background-color: rgb(117, 91, 101);
+            color: #ffffff;
+        }
+
+        .login1>a {
+            display: inline-block;
+            width: 97px;
+            text-align: center;
+            background-color: rgb(117, 91, 101);
+            color: #ffffff;
+        }
+
+        .text {
+            background-color: rgb(84, 124, 129);
+            width: 280px;
+            height: 250px;
+            margin: 20px auto;
+            color: #000;
+            text-align: center;
+        }
+
+        .more-enter,
+        .more-leave-to {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .more-enter.active,
+        .more-leave-active {
+            transition: all 1s
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h5>两个组件间的切换</h5>
+        <h6>可以直接使用<b> v-if 和 v-else </b>来实现，因为它们可以使用一个变量控制（true/false）</h6>
+
+        <div class="box">
+            <div class="login">
+                <!-- 使用变量 flag 控制组件内容的切换 -->
+                <a href="" @click.prevent="flag=true">登录</a>
+                <a href="" @click.prevent="flag=false">注册</a>
+            </div>
+            <div class="text">
+                <com1 v-if="flag"></com1>
+                <com2 v-else></com2>
+            </div>
+        </div>
+        <hr>
+
+
+        <h5>多个组件间的切换及动画过渡</h5>
+        <h6>当组件的个数大于两个时，变量已经无法控制，此时可以使用<b> component </b>标签，并在里面<b> 绑定 is </b>属性，该属性的值为已注册的组件名或一个组件的选项对象，用来标记所使用的组件</h6>
+        <h6>要对多个组件使用过渡效果只需要使用<b> transition </b>将其包裹即可，此外，还可以使用<b> mode </b>设置过渡模式</h6>
+        <small>过渡模式 <b> mode </b>有两个值：</small>
+        <li>out-in：当前元素先进行过渡，完成之后新元素过渡进入</li>
+        <li>in-out：新元素先进行过渡，完成之后当前元素过渡离开</li>
+
+        <div class="box">
+            <div class="login1">
+                <!-- 这里的c1,c2,c3需要使用引号包裹，因为它们作为组件名是一个字符串，如果不加引号，Vue 会去寻找它们对应的变量 -->
+                <a href="" @click.prevent="comName='c1'">登录</a>
+                <a href="" @click.prevent="comName='c2'">注册</a>
+                <a href="" @click.prevent="comName='c3'">找回</a>
+            </div>
+            <div class="text">
+                <!-- 对多个组件使用过渡  只需要使用 transition 包裹即可 -->
+                <transition name="more" mode="out-in">
+                    <!-- 使用一个变量来存放数据 -->
+                    <component :is="comName"></component>
+                </transition>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        new Vue({
+            el: '.container',
+            data: {
+                flag: true,
+                comName: 'c1' //使 comName 默认显示 c1 组件
+            },
+            components: {
+                com1: {
+                    template: '<p>我是<b>登录</b>组件</p>'
+                },
+                com2: {
+                    template: '<p>我是<b>注册</b>组件</p>'
+                },
+                c1: {
+                    template: '<p>我是<b>登录</b>组件</p>'
+                },
+                c2: {
+                    template: '<p>我是<b>注册</b>组件</p>'
+                },
+                c3: {
+                    template: '<p>我是<b>找回</b>组件</p>'
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

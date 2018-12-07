@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../vue.js"></script>
+    <style>
+        .app {
+            margin: 40px 400px;
+        }
+        button {
+            background-color: rgb(82, 170, 197);
+            color: antiquewhite;
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+        <h5>示例：在两个文本框输入字符串，将第一个字符串中的字符串与第二个文本框的拼接并输出至页面</h5>
+        <input type="text" v-model="msg1" placeholder="文本框" v-focus>
+        +
+        <input type="text" v-model="msg2" placeholder="拼接框">
+        =>
+        <button @click="add">合成</button>
+
+        <hr>
+
+        <ul>
+            <li v-for="item in list">{{item}}</li>
+        </ul>
+    </div>
+
+    <script>
+        new Vue({
+            el: '.app',
+            data: {
+                msg1: '',
+                msg2: '',
+                list: []        //空数组用于接收传入的数据
+            },
+            methods: {
+                add() {
+                    this.list.push(this.msg1 + this.msg2)
+                    this.msg1 = ''      //拼接后重置文本框
+                    return this.list        //返回数组
+                }
+            },
+            directives: {   //创建自定义指令
+                focus: {    //指令的名字是 focus
+                    update: (el) => {   //在页面节点更新时触发该事件
+                        el.focus()      //为触发事件的元素添加焦点
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

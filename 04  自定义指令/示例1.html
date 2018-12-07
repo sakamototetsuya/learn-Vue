@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>如何使用自定义指令</title>
+    <link rel="stylesheet" href="../bootstrap.min.css">
+    <script src="../vue.js"></script>
+    <style>
+        li {
+            color: rgb(44, 151, 212)
+        }
+
+        h6 {
+            color: rgb(221, 14, 14)
+        }
+
+        b {
+            color: orange
+        }
+
+        .app {
+            margin: 40px 300px;
+        }
+
+        .text {
+            width: 500px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+        <h6>需求：当页面加载后，将焦点置于文本框中;当改变文本框的值后，使模版上的值放大并改变颜色</h6>
+        <br>
+        <input v-focus class="text" type="text" v-model="msg">
+        <p>原版：{{ msg }}</p>
+        <p v-change="'blue'">指令：{{ msg }}</p> <!-- 这个 blue 代表自定义指令第二个参数 binding 的可选参数 -->
+    </div>
+
+    <script>
+        new Vue({
+            el: '.app',
+            data: {
+                msg: ''
+            },
+            directives: {           //局部定义自定义指令
+                focus: {    //首先写指令名，（此时）调用不需要加前缀 v-
+                    inserted: function (el) {   //第一个参数，决定指令应用的场景   inserted：表示在元素被插入DOM时调用
+                        el.focus()      //原生的 focus()
+                    }
+                },
+                change: (el, binding) => {          //binding：第二个参数，拥有几个可选参数
+                    el.style.color = binding.value          //value：可选参数，接收形参赋值
+                    el.style.fontSize = '18px'
+                }
+            }
+        })
+
+
+
+        /*
+
+        如上面的例子所示：
+
+        当仅使用 bind 和 update 的钩子，才可使用一种简写方法：
+        Vue.directive('指令名', function(el, binding) {
+            ...
+        })   
+
+        */
+    </script>
+</body>
+
+</html>

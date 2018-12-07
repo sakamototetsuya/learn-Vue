@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>过渡的钩子函数</title>
+    <script src="../vue.js"></script>
+    <link rel="stylesheet" href="../bootstrap.min.css">
+    <style>
+        li {
+            color: rgb(44, 151, 212)
+        }
+
+        h6 {
+            color: rgb(221, 14, 14)
+        }
+
+        h5 {
+            margin: 10px 0 20px 0;
+        }
+
+        b {
+            color: orange
+        }
+
+        button {
+            margin: 10px 0;
+            padding: 5px;
+            color: white;
+            background-color: rgb(37, 80, 83);
+        }
+
+
+        .item-enter-active,
+        .item-leave-active {
+            transition: all 1s;
+        }
+
+        .item-enter,
+        .item-leave-to {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .inlineb {
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h5>列表的进入/离开过渡</h5>
+        <h6 class="text-danger">注意：
+            <li>对这样多个渲染的结构使用过渡不能使用<b> transition </b>组件，而要使用<b> transtion-group </b>组件，并且需要指定唯一的<b> key </b>值</li>
+            <li>另外，默认会将组件转变为<b> span </b>，可使用<b> tag </b>属性改变</li>
+            <li>如果觉得打开页面的时候就存在列表太突兀，可给组件添加一个<b> appear </b>属性，使之得到初始渲染的过渡</li>
+        </h6>
+        <div class="app1">
+            <button @click="add">添加项</button>
+            <button @click="remove">删除项</button>
+            <br><br>
+            <transition-group name="item" mode="out-in" tag="ul" appear>
+                <span v-for="item in lists" :key="item" class="inlineb">{{item + '&nbsp;&nbsp;'}}</span>
+            </transition-group>
+        </div>
+    </div>
+
+
+
+    <script>
+        new Vue({
+            el: '.container',
+            data: {
+                lists: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+                nextNum: 10
+            },
+            methods: {
+                //添加一个随机方法，以决定添加/删除项的位置
+                random() {
+                    return Math.floor(Math.random() * this.lists.length)
+                },
+
+                //splice(index, delNumber, insertItem):在操作位置删除几个数，并插入几个项
+                add() {
+                    this.lists.splice(this.random(), 0, this.nextNum++)
+                },
+                remove() {
+                    this.lists.splice(this.random(), 1)
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

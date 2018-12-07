@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>this.$refs获取元素和组件</title>
+    <script src="../vue.js"></script>
+    <link rel="stylesheet" href="../bootstrap.min.css">
+    <style>
+        li {
+            color: rgb(44, 151, 212)
+        }
+
+        h6 {
+            color: rgb(221, 14, 14)
+        }
+
+        h5 {
+            margin: 10px 0 20px 0;
+        }
+
+        b {
+            color: orange
+        }
+
+        button {
+            margin: 10px 0;
+            padding: 5px;
+            color: white;
+            background-color: rgb(37, 80, 83);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h5>$refs 获取 DOM 元素(获取组件同理)</h5>
+        <h6>
+            <li>首先要在想要操作的元素中使用属性 <b> ref="名字" </b>标记元素</li>
+            <li>然后使用<b> this.$refs.名字.xxx </b>进行操作（本例：innerText）</li>
+            <li class="text-danger">注意：添加属性时没有<b> s (ref)</b>，使用方法时有<b> s ($refs)</b></li>
+        </h6>
+
+
+        <button type="button" class="btn btn-info" @click="getDOM">获取DOM元素</button>
+
+        <h5 class="text-info" ref="myh5">哦嚯嚯嚯嚯  今天是个好天气啊~</h5>
+        <h6>获取的内容是：{{ msg }}</h6>
+    </div>
+    <script>
+        new Vue({
+            el: '.container',
+            data: {
+                msg: ''
+            },
+            methods: {
+                getDOM() {
+                    this.msg = this.$refs.myh5.innerText
+                }
+            }
+        })
+    </script>
+    <br><br><br><br>
+</body>
+
+</html>

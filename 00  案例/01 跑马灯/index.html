@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../../vue.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <button @click="run">浪里个浪~</button>
+        <button @click="stop">别浪！</button>
+        <p>{{ msg }}</p>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                msg: '开黑吗？我玩亚索，不怂就是干！',
+                timer: null     //设置定时器控制变量
+            },
+            methods: {
+                run() {
+                    if (this.timer == null) {   //控制定时器何时运行
+                        this.timer = setInterval(() => {    //箭头函数可以使 this 位于外部，即不改变函数 this 的指向
+                            var head = this.msg.substring(0, 1)
+                            var foot = this.msg.substring(1)
+                            this.msg = foot + head
+                        }, 200)
+                    }
+                },
+                stop() {
+                    clearInterval(this.timer)
+                    this.timer = null
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

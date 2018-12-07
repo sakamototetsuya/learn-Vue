@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue的基本知识</title>
+    <link rel="stylesheet" href="../bootstrap.min.css">
+    <style>
+        li {
+            margin: 10px;
+            color: dodgerblue
+        }
+        .em {
+            color: red
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h3>对于 MVVM 的理解</h3>
+        <strong>MVVM</strong> 是 <strong>Model-View-ViewModel</strong> 的缩写。其中：</p>
+        <li><strong>Model</strong>：代表数据模型，也可以在 Model 中定义数据修改和操作的业务逻辑</li>
+        <li><strong>View</strong>：代表 UI 组件，负责将数据模型转化成 UI 展现出来</li>
+        <li><strong>ViewModel</strong>：监听模型数据的改变和控制视图行为、处理用户交互。简单理解为一个同步 View 和 Model 的对象，连接 Model 和 View</li>
+        <h6 class="em">在 <strong>MVVM</strong> 架构下，<strong>View</strong> 和 <strong>Model</strong> 之间并没有直接的联系，而是通过 <b>ViewModel</b> 进行交互，<b>Model</b> 和 <b>ViewModel</b> 之间的交互是双向的，因此 <b>View</b> 的数据变化也会同步到 <b>Model</b>中，而 <b>Model</b> 数据的变化也会反应到<b>View</b>上</h6>
+    </div>
+    <hr>
+
+
+
+    <div class="container">
+        <h3>MVC相较于MVVM的区别</h3>
+        <pre>
+            两者的区别其实并不大，都是一种设计思想。
+            主要就是 <b>MVC</b> 中 <b>Controller</b> 演变成 <b>MVVM</b> 中的 <b>ViewModel</b> 。
+            MVVM主要解决了MVC中大量的DOM操作使页面渲染性能降低，加载速度变慢，影响用户体验。并且，当Model频繁发生变化时，开发者需要主动更新到View
+        </pre>
+    </div>
+    <hr>
+
+
+
+    <div class="container">
+        <h3>VUE的优点</h3>
+        <li>低耦合：View可以独立于Model变化和修改，一个 ViewModel 可以绑定到不同的 View 上，且 View 和 Model 可以不随彼此改变而更新</li>
+        <li>可重用性：可以把一个视图逻辑放在一个 ViewModel 里面，让很多的 View 重用</li>
+        <li>独立开发：开发人员可以专注于业务逻辑和数据开发（ViewModel），设计人员可以专注于页面设计</li>
+        <li>可测试性：测试可针对 ViewModel 来写</li>
+    </div>
+    <hr>
+
+
+    <div class="container">
+        <h3>VUE的生命周期</h3>
+        <p>总共分为八个阶段：创建前/后，载入前/后，更新前/后，销毁前/后</p>
+        <li>首先在 new Vue({}) ，创建一个 Vue 的实例对象</li>
+        <li>创建前/后：在 <b>beforeCreate（创建之前）</b> 阶段，此时 data 和 methods 等属性和方法均还没有初始化，所以该钩子无法使用vue的数据；在 <b>created（创建之后）</b> 阶段，此时 data 和 methods 已经初始化，这是 vue 最早的可以调用数据生命周期</li>
+        <li>载入前/后：在<b>beforeMount（载入之前）</b>，此时 Vue 开始编译模版，即将模版渲染到内存中的 DOM ，但还没有把 DOM 载入 View 中，也就是说页面仅能显示变量状态而不能得到实际数据；在 <b>Mounted（载入之后）</b> 阶段，此时内存中的模版已经被替换到页面，即可以看到页面被渲染完成，所以该阶段就是实例完整创建的标志</li>
+        <li>更新前/后：这两个阶段需要实例对象的数据发生变化才会触发。<b>beforeUpdate（更新之前）</b> 是当数据更新时触发，此时 Model 中的 data 已经被更新，但是还没有绑定到 View 中，即没有渲染到页面；<b>updated（更新之后）</b> 阶段时，已完成数据渲染，即可以在 View 中看到更新后的数据</li>
+        <li>销毁前/后：<b>beforeDestroy（销毁之前）</b> 阶段，实例中的 data 、 methods 等还没有被销毁，此时还可以使用实例数据；<b>destroyed（销毁之后）</b> 阶段，此时实例已经被销毁，无法在使用其中的数据</li>
+    </div>
+</body>
+
+</html>

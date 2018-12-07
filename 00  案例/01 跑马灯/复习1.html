@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../../vue.js"></script>
+    <style>
+        .app {
+            margin: 80px 500px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+        <button @click="run">浪起来</button>
+        <button @click="stop">停止！</button>
+        <h3>{{ msg }}</h3>
+    </div>
+
+    <script>
+        var vm = new Vue({
+            el: '.app',
+            data: {
+                msg: '一緒に遊びましょう~',
+                timer: null
+            },
+            methods: {
+                run() {
+                    if (this.timer == null) {
+                        this.timer = setInterval(() => {
+                            var first = this.msg.substring(0, 1)     //截取第一个字符
+                            var last = this.msg.substring(1)     //截取第一个字符之后
+                            this.msg = last + first     //拼接两组字符串
+                        }, 200)
+                    }
+                },
+                stop() {
+                    clearInterval(this.timer)
+                    this.timer = null
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
