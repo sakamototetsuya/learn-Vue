@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>嵌套路由</title>
+    <script src="../vue.js"></script>
+    <script src="../vue-router.js"></script>
+    <link rel="stylesheet" href="../../Vue/bootstrap.min.css">
+    <style>
+        li {
+            color: rgb(44, 151, 212)
+        }
+
+        h6 {
+            color: rgb(221, 14, 14)
+        }
+
+        h5 {
+            margin: 10px 0 20px 0;
+        }
+
+        b {
+            color: orange
+        }
+
+        button {
+            margin: 10px 0;
+            padding: 5px;
+            color: white;
+            background-color: rgb(37, 80, 83);
+        }
+
+        a {
+            margin-right: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h5>嵌套路由-----children</h5>
+        <h6>很多时候，我们需要在一个路由中嵌套一些子路由，但是这并不是单纯写个< router-view>标签就行，而是需要在父路由中添加一个参数<b> children </b></h6>
+        <li><b> children </b>是一个数组，它的写法与父路由一致：用对象的写法，包含两个必要参数<b> path </b>和<b> component </b></li>
+        <li>此外，如果将<b> path </b>的值设为<b> / </b>，这表示它是一个默认地址</li>
+        <li>语法1：<b> < router-link to="/父路由的地址名字/要去的子路由的名字" >< /router-link ></b></li>
+        <li>语法2：子路由在配置<b> path </b>时不用加<b> /父路由地址名字 </b>，直接写<b> path: 子路由名字 </b>即可</li>
+        <hr>
+        <router-link to="/index">首页</router-link>
+        <router-view></router-view>
+
+
+    </div>
+    <script>
+        const index = {
+            template: `
+            <div>
+                <h5>欢迎来到首页~</h5>
+                <router-link to="/index/login">登录</router-link>
+                <router-link to="/index/regis">注册</router-link>
+                <router-view></router-view>
+            </div>
+            `
+        }
+        const login = { template: '<div>登录组件</div>' }
+        const regis = { template: '<div>注册组件</div>' }
+
+        const router = new VueRouter({
+            routes: [{
+                path: '/index',
+                component: index,
+                children: [{
+                        path: 'login',
+                        component: login
+                    },
+                    {
+                        path: 'regis',
+                        component: regis
+                    }
+                ]
+            }]
+        })
+
+        new Vue({
+            el: '.container',
+            router: router
+        })
+    </script>
+</body>
+
+</html>
