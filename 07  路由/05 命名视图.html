@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>命名视图</title>
+    <script src="../vue.js"></script>
+    <script src="../vue-router.js"></script>
+    <link rel="stylesheet" href="../../Vue/bootstrap.min.css">
+    <style>
+        li {
+            color: rgb(44, 151, 212)
+        }
+
+        h6 {
+            color: rgb(221, 14, 14)
+        }
+
+        h5 {
+            margin: 10px 0 20px 0;
+        }
+
+        b {
+            color: orange
+        }
+
+        button {
+            margin: 10px 0;
+            padding: 5px;
+            color: white;
+            background-color: rgb(37, 80, 83);
+        }
+
+        a {
+            margin-right: 15px;
+        }
+
+        .a {
+            width: 100%;
+            height: 50px;
+            background-color: brown;
+        }
+
+        .b {
+            float: left;
+            width: 30%;
+            height: 150px;
+            background-color: darkgoldenrod;
+        }
+
+        .c {
+            float: left;
+            width: 70%;
+            height: 150px;
+            background-color: hotpink;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h5>命名视图---components</h5>
+        <h6>有时候我们需要在一个路由中展示多个视图（同级），而不是嵌套展示，此时，可以在Router实例中，以<b> components </b>列举存放在一个路由的多个组件</h6>
+        <li>使用<b> components </b>代替<b> component </b>（多了个 s ）</li>
+        <li><b> components </b>是一个对象，语法为<b> name: '路由模版对象' </b></li>
+        <li><b>
+                < router-view>
+            </b>中，对应添加<b> name </b>属性，没有添加的路由视图将默认为<b> default </b></li>
+        <hr>
+
+        <p>举个栗子：点击链接后开启三个视图</p>
+        <router-link to="/Open">Open the doorrrrr!</router-link>
+        <router-view class="a"></router-view>
+        <router-view name="left" class="b"></router-view>
+        <router-view name="right" class="c"></router-view>
+    </div>
+
+
+    <script>
+        const a = { template: '<div>A组件</div>' }
+        const b = { template: '<div>B组件</div>' }
+        const c = { template: '<div>C组件</div>' }
+
+        const router = new VueRouter({
+            routes: [{
+                path: '/Open',
+                components: {
+                    default: a,
+                    left: b,
+                    right: c
+                }
+            }]
+        })
+        new Vue({
+            el: '.container',
+            router: router
+        })
+    </script>
+</body>
+
+</html>

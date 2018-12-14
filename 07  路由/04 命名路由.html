@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>命名路由</title>
+    <script src="../vue.js"></script>
+    <script src="../vue-router.js"></script>
+    <link rel="stylesheet" href="../../Vue/bootstrap.min.css">
+    <style>
+        li {
+            color: rgb(44, 151, 212)
+        }
+
+        h6 {
+            color: rgb(221, 14, 14)
+        }
+
+        h5 {
+            margin: 10px 0 20px 0;
+        }
+
+        b {
+            color: orange
+        }
+
+        button {
+            margin: 10px 0;
+            padding: 5px;
+            color: white;
+            background-color: rgb(37, 80, 83);
+        }
+
+        a {
+            margin-right: 15px;
+        }
+
+        .box1 {
+            border: 1px solid #151679;
+            width: 150px;
+            height: 150px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h5>命名路由---name属性标记路由</h5>
+        <h6>给路由定义不同的名字，根据名字进行匹配，同时，给不同<b> < router-link > </b>通过对应名称进行渲染。这需要我们在Router实例的<b> routes </b>中添加一个<b> name </b>属性</h6>
+        <li>此时，在<b> < router-link ></b>中，我们使用<b> v-bind: </b>绑定<b> to </b>属性（简写 :to ），并且用一个对象承载，里面必须有路由地址，即<b> name </b>对应的路由</li>
+        <li>如果地址有传参，使用<b> params </b>对象接收参数</li>
+        <li>在Router实例中，配置的路由要使用<b> name: '名称' </b>匹配路由，名称要与<b> < router-link > </b>的相对应</li>
+        <hr>
+
+
+        <router-link :to="{ name:'user' }">用户</router-link>
+        <router-link :to="{ name:'login' }">登录</router-link>
+        <router-link :to="{ name:'regis', params: { id: 666 } }">注册</router-link>
+
+        <router-view class="box1"></router-view>
+    </div>
+
+
+    <script>
+        const com1 = { template: '<div>组件1</div>' }
+        const com2 = { template: '<div>组件2</div>' }
+        const com3 = { template: '<div>组件3</div>' }
+
+        const router = new VueRouter({
+            routes: [
+                { path: '/user', component: com1, name: 'user' },
+                { path: '/login', component: com2, name: 'login' },
+                { path: '/regis/:id', component: com3, name: 'regis' }
+            ]
+        })
+        new Vue({
+            el: '.container',
+            router: router
+        })
+    </script>
+</body>
+
+</html>
