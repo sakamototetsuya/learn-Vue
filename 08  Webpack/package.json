@@ -6,15 +6,20 @@
   "dependencies": {
     "_jquery@3.3.1@jquery": "^3.3.1",
     "jquery": "^3.3.1",
-    "webpack-dev-server": "^3.1.10",
-    "webpack": "^4.27.1"
+    "webpack": "^4.27.1",
+    "webpack-dev-server": "^3.1.10"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "css-loader": "^2.0.1",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.27.1",
+    "webpack-dev-server": "^3.1.10"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack --mode development",
     "build": "webpack --mode production",
-    "server":"webpack-dev-server --open --contentBase src"
+    "server": "webpack-dev-server --open --contentBase src"
   },
   "author": "",
   "license": "ISC"
