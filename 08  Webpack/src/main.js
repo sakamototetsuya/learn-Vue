@@ -5,7 +5,7 @@ import $ from 'jquery';
 import "./css/index.css";
 
 $(function () {
-    $('li:odd').css('color', 'red');
+    $('li:odd').css('color', '#459711');
     $('li:even').css('color', function () {
         return '#' + 'DA4396';
     });
