@@ -9,4 +9,6 @@ $(function () {
     $('li:even').css('color', function () {
         return '#' + 'DA4396';
     });
+    
 });
+
